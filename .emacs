@@ -71,7 +71,7 @@
 (defun small (&optional nosplit)
   "Create a two-pane window suitable for coding on a macbook."
   (interactive "P")
-  (my-set-mac-font "PragmataPro" 12)
+  (my-set-mac-font "PragmataPro" 14)
   (arrange-frame 170 45 nosplit))
 
 (defun medium (&optional nosplit)
