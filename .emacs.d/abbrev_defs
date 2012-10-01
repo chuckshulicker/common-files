@@ -41,9 +41,7 @@
 
 (define-abbrev-table 'global-abbrev-table '())
 
-(define-abbrev-table 'haml-mode-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'haml-mode-abbrev-table '())
 
 (define-abbrev-table 'help-mode-abbrev-table '())
 
@@ -356,6 +354,12 @@ $><tr><td>$${Data}</td></tr>
 (define-abbrev-table 'occur-edit-mode-abbrev-table '())
 
 (define-abbrev-table 'occur-mode-abbrev-table '())
+
+(define-abbrev-table 'octave-abbrev-table
+  '(
+   ))
+
+(define-abbrev-table 'octave-mode-abbrev-table '())
 
 (define-abbrev-table 'org-mode-abbrev-table '())
 

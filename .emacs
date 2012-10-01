@@ -1,4 +1,3 @@
-
 (load-file "~/.emacs.d/cf-general.el")
 
 (put 'upcase-region 'disabled nil)
