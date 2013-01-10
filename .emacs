@@ -1,4 +1,5 @@
 (load-file "~/.emacs.d/cf-general.el")
+(load-file "~/.emacs.d/personalized.el")
 
 (put 'upcase-region 'disabled nil)
 
