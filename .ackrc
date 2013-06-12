@@ -4,4 +4,11 @@
 --type-set=cuke=.feature
 --type-set=conf=.conf
 --type-set=coffee=.coffee
+--type-set=json=.json
+--type-set=markdown=.markdown,.md
 --ignore-dir=culerity_page_errors
+--ignore-dir=coverage
+--ignore-dir=coverage_merged
+--ignore-dir=vendor/bundle/ruby
+--ignore-dir=log
+--ignore-dir=tmp

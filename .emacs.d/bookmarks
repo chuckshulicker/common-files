@@ -1,0 +1,15 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("b"
+ (filename . "~/projects/zynga/gwf_service/app_scramble_game/models/scramble_game.rb")
+ (front-context-string . "  def self.send_")
+ (rear-context-string . "\n    end\n  end\n\n")
+ (position . 11027))
+("a"
+ (filename . "~/projects/zynga/gwf_service/spec/models/game/scramble_game_spec.rb")
+ (front-context-string . "  describe \"send")
+ (rear-context-string . "\n    end\n  end\n\n")
+ (position . 35670))
+)

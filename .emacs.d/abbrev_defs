@@ -11,6 +11,8 @@
 
 (define-abbrev-table 'bibtex-mode-abbrev-table '())
 
+(define-abbrev-table 'bookmark-bmenu-mode-abbrev-table '())
+
 (define-abbrev-table 'c++-mode-abbrev-table
   '(
    ))
@@ -355,9 +357,7 @@ $><tr><td>$${Data}</td></tr>
 
 (define-abbrev-table 'occur-mode-abbrev-table '())
 
-(define-abbrev-table 'octave-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'octave-abbrev-table '())
 
 (define-abbrev-table 'octave-mode-abbrev-table '())
 

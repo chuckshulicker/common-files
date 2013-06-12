@@ -1,41 +1,18 @@
 (load-file "~/.emacs.d/cf-general.el")
-(load-file "~/.emacs.d/personalized.el")
 
 (put 'upcase-region 'disabled nil)
 
 (setq show-trailing-whitespace t)
 (cua-mode)
 
+(require 'color-theme)
+(color-theme-initialize)
+(load "~/.emacs.d/autoload/colors/themes/color-theme-twilight.el")
+(color-theme-twilight)
+
 (require 'yaml-mode)
 (require 'markdown-mode)
 (require 'coffee-mode)
-
-(require 'color-theme)
-(color-theme-initialize)
-;; uncomment two lines below to start emacs with a different color theme.
-;; I like the twilight theme. It has draculas. -joel
-;; (load "~/.emacs.d/autoload/colors/themes/color-theme-vibrant-ink.el")
-;; (color-theme-vibrant-ink)
-;; (load "~/.emacs.d/autoload/colors/themes/color-theme-less.el")
-;; (color-theme-less)
-;; (load "~/.emacs.d/autoload/colors/themes/color-theme-subdued.el")
-;; (color-theme-subdued)
-;; (load "~/.emacs.d/autoload/colors/themes/color-theme-wombat.el")
-;; (color-theme-wombat)
-(load "~/.emacs.d/autoload/colors/themes/color-theme-twilight.el")
-(color-theme-twilight)
-;; (load "~/.emacs.d/autoload/colors/themes/color-theme-railscasts.el")
-;; (color-theme-railscasts)
-;;(load "~/.emacs.d/autoload/colors/themes/color-theme-chocolate-rain.el")
-;; (color-theme-chocolate-rain)
-
-(set-frame-parameter (selected-frame) 'alpha '(94 50))
-(add-to-list 'default-frame-alist '(alpha 94 50))
-
-(server-start)
-(small)
-(maximize-frame)
-(ns-toggle-fullscreen)
 
 ;; Use a hbar cursor when mark is active and a region exists.
 (defun th-activate-mark-init ()
@@ -57,7 +34,7 @@
 (setq default-buffer-file-coding-system 'utf-8)
 ;; From Emacs wiki
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
-;; MS Windows clipboard is UTF-16LE 
+;; MS Windows clipboard is UTF-16LE
 (set-clipboard-coding-system 'utf-16le-dos)
 
 
@@ -70,3 +47,14 @@
 ;; create a backup file directory
 (defun make-backup-file-name (file)
 (concat "~/.emacs.backups/" (file-name-nondirectory file) "~"))
+
+(load-file "~/.emacs.d/personalized.el")
+
+(set-frame-parameter (selected-frame) 'alpha '(94 50))
+(add-to-list 'default-frame-alist '(alpha 94 50))
+
+(server-start)
+(small)
+(maximize-frame)
+
+(if (boundp 'ns-toggle-fullscreen) ns-toggle-fullscreen)

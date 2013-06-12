@@ -43,8 +43,8 @@ alias gcm='git commit -m'
 alias gc="git commit"
 alias gca='git commit -a'
 alias gcam='git commit -a -m'
-alias gs='git status'
-alias gst='git status'
+alias gs='git status -sb'
+alias gst='git status -sb'
 alias gco="git checkout"
 alias gu="git reset HEAD"
 alias ghr="git log -n1 --pretty=format:'%C(bold red)%h%Creset'"
@@ -62,6 +62,7 @@ alias ga="git add"
 complete -o default -o nospace -F _git_add ga
 # Bundle All The Things
 alias batt="bundle install --path vendor/bundle/ --binstubs --verbose"
+alias b="batt"
 alias cuwork="cucumber ./features -t @shouldwork"
 alias cuwip="cucumber ./features -t @wip"
 alias cufail="cucumber ./features -t @shouldfail"
@@ -82,74 +83,74 @@ export CF_TARBALL_BACKUP="true"
 export CF_BACKUP_COUNT=5
 cfup() {
     if [[ "$PWD" != "$HOME" ]]; then
-	#you aren't in your home directory, prompt for continuing
-	echo
-	echo "You do not appear to be in your home directory"
-	echo -n "Do you wish to continue? [Y,n]: "
-	read
-	if ! [[ "$REPLY" == "" || "$REPLY" == "y" || "$REPLY" == "Y" ]]; then
-	    return 1
-	fi
+  #you aren't in your home directory, prompt for continuing
+  echo
+  echo "You do not appear to be in your home directory"
+  echo -n "Do you wish to continue? [Y,n]: "
+  read
+  if ! [[ "$REPLY" == "" || "$REPLY" == "y" || "$REPLY" == "Y" ]]; then
+      return 1
+  fi
     fi
     if svn info &> /dev/null; then
-	#is repos
-	if [[ "`svn info | grep '/svn/home/common_files'`" == "" ]]; then
-	#repos isn't common files
-	    echo
-	    echo "The repository in the current directory does not appear to be the common files."
-	    echo -n "Do you wish to use the tarball? [Y,n]: "
-	    read
-	    if ! [[ "$REPLY" == "" || "$REPLY" == "y" || "$REPLY" == "Y" ]]; then
-		return 3
-	    fi
-	else
-	    svn up
-	    if [[ "$?" != "0" || "`svn stat | grep '^C'`" != "" ]]; then
-		echo
-		echo "Error updating repository, check above for more info."
-		return 4
-	    fi
-	    return 0
-	fi
+  #is repos
+  if [[ "`svn info | grep '/svn/home/common_files'`" == "" ]]; then
+  #repos isn't common files
+      echo
+      echo "The repository in the current directory does not appear to be the common files."
+      echo -n "Do you wish to use the tarball? [Y,n]: "
+      read
+      if ! [[ "$REPLY" == "" || "$REPLY" == "y" || "$REPLY" == "Y" ]]; then
+    return 3
+      fi
+  else
+      svn up
+      if [[ "$?" != "0" || "`svn stat | grep '^C'`" != "" ]]; then
+    echo
+    echo "Error updating repository, check above for more info."
+    return 4
+      fi
+      return 0
+  fi
     else
     #curr dir isn't repos
-	echo
-	echo -n "svn repository not detected, use tbz2? [Y,n]: "
-	read y
-	if ! [[ "$y" == "" || "$y" == "y" || "$y" == "Y" ]]; then
-	    return 5
-	fi
+  echo
+  echo -n "svn repository not detected, use tbz2? [Y,n]: "
+  read y
+  if ! [[ "$y" == "" || "$y" == "y" || "$y" == "Y" ]]; then
+      return 5
+  fi
     fi
 
     if [[ "$CF_TARBALL_BACKUP" == "true" ]]; then
-	TEMPDIR=`mktemp -d -t cf_backup_tmp.XXXXXXXXXXXXXX` &&
-	wget -O - http://cf.telaranrhiod.com/files/common/common_files.tbz2 | tar -xjov --no-same-permissions -C $TEMPDIR ./ &&
-	date="`date '+%Y-%m-%d--%H-%M-%S'`" &&
+  TEMPDIR=`mktemp -d -t cf_backup_tmp.XXXXXXXXXXXXXX` &&
+  wget -O - http://cf.telaranrhiod.com/files/common/common_files.tbz2 | tar -xjov --no-same-permissions -C $TEMPDIR ./ &&
+  date="`date '+%Y-%m-%d--%H-%M-%S'`" &&
   version=`echo $CF_RUNNING_VERSION | awk '{print $1}'` &&
-	backup_path="$HOME/.common_files/backups/${date}--r${version}/" &&
-	mkdir -p $backup_path &&
-	echo "moving new files into place and backing up old files to $backup_path" &&
-	rsync -av -b --backup-dir=$backup_path $TEMPDIR/ ./ &&
-	rm -rv $TEMPDIR &&
-#	cp --parents `find | grep '.*.cf.bkp$' | grep -v '\.common_files/backups/'` $backup_path &&
-#	rm -rf `find | grep '.*.cf.bkp$' | grep -v '\.common_files/backups/'` &&
+  backup_path="$HOME/.common_files/backups/${date}--r${version}/" &&
+  mkdir -p $backup_path &&
+  echo "moving new files into place and backing up old files to $backup_path" &&
+  rsync -av -b --backup-dir=$backup_path $TEMPDIR/ ./ &&
+  rm -rv $TEMPDIR &&
+# cp --parents `find | grep '.*.cf.bkp$' | grep -v '\.common_files/backups/'` $backup_path &&
+# rm -rf `find | grep '.*.cf.bkp$' | grep -v '\.common_files/backups/'` &&
 
-	if [[ "$CF_BACKUP_COUNT" != "" && "$CF_BACKUP_COUNT" -ge "0" ]] &> /dev/null; then
-	    old_backups="`ls $HOME/.common_files/backups/ | sort | head -n -${CF_BACKUP_COUNT}`"
-	    if [[ "$old_backups" != "" ]]; then
-		echo "Removing old backups ($old_backups) due to a CF_BACKUP_COUNT of $CF_BACKUP_COUNT"
-		(cd $HOME/.common_files/backups/ && rm -rf $old_backups)
-	    fi
-	fi
+  if [[ "$CF_BACKUP_COUNT" != "" && "$CF_BACKUP_COUNT" -ge "0" ]] &> /dev/null; then
+      old_backups="`ls $HOME/.common_files/backups/ | sort | head -n -${CF_BACKUP_COUNT}`"
+      if [[ "$old_backups" != "" ]]; then
+    echo "Removing old backups ($old_backups) due to a CF_BACKUP_COUNT of $CF_BACKUP_COUNT"
+    (cd $HOME/.common_files/backups/ && rm -rf $old_backups)
+      fi
+  fi
 
     else
-	wget -O - http://cf.telaranrhiod.com/files/common/common_files.tbz2 | tar -xjov --no-same-permissions ./
+  wget -O - http://cf.telaranrhiod.com/files/common/common_files.tbz2 | tar -xjov --no-same-permissions ./
     fi
 
     if [[ "$?" != "0" ]]; then
-	echo
-	echo "Error downloading or extracting tar, check above for more info."
-	return 2
+  echo
+  echo "Error downloading or extracting tar, check above for more info."
+  return 2
     fi
 
     echo
@@ -159,17 +160,17 @@ cfup() {
 
 sS() {
     if [[ "$2" != "" ]]; then
-	ssh -t $2 screen -S $1
+  ssh -t $2 screen -S $1
     else
-	screen -S $1
+  screen -S $1
     fi
 }
 
 sx() {
     if [[ "$2" != "" ]]; then
-	ssh -t $2 screen -x $1
+  ssh -t $2 screen -x $1
     else
-	screen -x $1
+  screen -x $1
     fi
 }
 
@@ -190,15 +191,15 @@ pssh() {
 }
 tssh() {
     set_temp_known_host $*
-    ssh -o "UserKnownHostsFile=${known_hosts_temp_file}" $*   
+    ssh -o "UserKnownHostsFile=${known_hosts_temp_file}" $*
 }
 
 vncvia() {
     if [[ "$*" == "" ]]; then
-	echo "usage:   vncvia [user@]remotehost [other vnc options...]"
+  echo "usage:   vncvia [user@]remotehost [other vnc options...]"
     else
-	echo "vncviewer -via $* localhost"
-	vncviewer -via $* localhost
+  echo "vncviewer -via $* localhost"
+  vncviewer -via $* localhost
     fi
 }
 
@@ -221,26 +222,26 @@ cf_date_check_notify() {
     [ -f $last_notified_date_path ] && last_date=`cat $last_notified_date_path`
     let "new_date = $last_date + $CF_TIME_BETWEEN_NOTIFICATIONS"
     if [[ "$new_date" -lt "`date '+%s'`" ]]; then
-	[ -f $notification_message_path ] && cat $notification_message_path && echo "`date '+%s'`" > $last_notified_date_path
+  [ -f $notification_message_path ] && cat $notification_message_path && echo "`date '+%s'`" > $last_notified_date_path
     fi
 }
 
 cf_get_latest_local_version() {
     #get your current revision number
     if which git &> /dev/null; then
-	      my_rev=`(git --git-dir $HOME log -1 --pretty=format:"%H %ad") 2> /dev/null`
-    fi	
-	  if [[ "$my_rev" == "" ]]; then
-	      #couldn't get version from svn so we'll try .common_files/latest_revision.txt
-	      my_rev=`cat "$HOME/.common_files/.latest_revision" 2> /dev/null`
-	  fi
-	  if [[ "$my_rev" == "" ]]; then
-	      return 1
-	  fi
-    
-	  CF_LOCAL_LATEST_VERSION=$my_rev
-    
-	  return 0
+        my_rev=`(git --git-dir $HOME log -1 --pretty=format:"%H %ad") 2> /dev/null`
+    fi
+    if [[ "$my_rev" == "" ]]; then
+        #couldn't get version from svn so we'll try .common_files/latest_revision.txt
+        my_rev=`cat "$HOME/.common_files/.latest_revision" 2> /dev/null`
+    fi
+    if [[ "$my_rev" == "" ]]; then
+        return 1
+    fi
+
+    CF_LOCAL_LATEST_VERSION=$my_rev
+
+    return 0
 }
 
 cf_get_latest_local_version
@@ -258,19 +259,19 @@ cf_check_for_updates() {
             latest=`curl -sL http://cf.telaranrhiod.com/files/common/latest_revision.txt`
             #make sure curl returned successfully
             if [[ "$?" == "0" ]]; then
-                #	my_rev="`cf_get_latest_local_version`"
+                # my_rev="`cf_get_latest_local_version`"
                 cf_get_latest_local_version
-	              my_rev=$CF_LOCAL_LATEST_VERSION
-              	#check if you're up to date
+                my_rev=$CF_LOCAL_LATEST_VERSION
+                #check if you're up to date
                 latest_hash=`echo $latest | awk '{print $1}'`
                 my_hash=`echo $my_rev | awk '{print $1}'`
-	              if [[ "$latest_hash" != "$my_hash" ]]; then 
-              	    #if not, create the .out_of_date file with the appropriate message so next time you start a terminal we can alert you.
-	                  echo "Not on latest revision of common_files.  Latest: $latest, yours: $my_rev" > $notification_message_path
-	              else
-              	    #if you're up to date we don't need this file
-	                  [ -f $notification_message_path ] && rm $notification_message_path
-	              fi
+                if [[ "$latest_hash" != "$my_hash" ]]; then
+                    #if not, create the .out_of_date file with the appropriate message so next time you start a terminal we can alert you.
+                    echo "Not on latest revision of common_files.  Latest: $latest, yours: $my_rev" > $notification_message_path
+                else
+                    #if you're up to date we don't need this file
+                    [ -f $notification_message_path ] && rm $notification_message_path
+                fi
             fi
         fi
 ) &)
@@ -285,8 +286,8 @@ cf_date_check_for_updates() {
     [ -f $last_checked_for_updates_date_path ] && last_date=`cat $last_checked_for_updates_date_path`
     let "new_date = $last_date + $CF_TIME_BETWEEN_UPDATES"
     if [[ "$new_date" -lt "`date '+%s'`" ]]; then
-	cf_check_for_updates
-	echo "`date '+%s'`" > $last_checked_for_updates_date_path
+  cf_check_for_updates
+  echo "`date '+%s'`" > $last_checked_for_updates_date_path
     fi
 }
 
@@ -360,13 +361,13 @@ if [[ "$TERM" != 'dumb' ]] && [[ -n "$BASH" ]]; then
 
     #use a red $ if you're root, white otherwise
     if [[ $WHOAMI = "root" ]]; then
-    	  #red hostname
-	      PS1="${PS1}${FG_RED}\u@"
+        #red hostname
+        PS1="${PS1}${FG_RED}\u@"
     else
-      	#green user@hostname
-     	  PS1="${PS1}${FG_GREEN}\u@"
+        #green user@hostname
+        PS1="${PS1}${FG_GREEN}\u@"
     fi
- 
+
     GIT_PS1_SHOWDIRTYSTATE=1
     #working dir basename and prompt
     PS1="${PS1}\h ${FG_RED}\$(__git_ps1 "[%s]") ${FG_BLUE}\W ${FG_BLUE}\$ ${NO_COLOR}"
@@ -398,8 +399,8 @@ export PROMPT_COMMAND='[[ "`set | grep -E \"cf_prompt_command \(\)\"`" != "" ]] 
 
 if ! shopt -q login_shell; then
     if [ -f /usr/bin/keychain ]; then
-	[ -f ~/.ssh/id_dsa ] && /usr/bin/keychain --noask ~/.ssh/id_dsa &> /dev/null
-	[ -f ~/.ssh/id_rsa ] && /usr/bin/keychain --noask ~/.ssh/id_rsa &> /dev/null
+  [ -f ~/.ssh/id_dsa ] && /usr/bin/keychain --noask ~/.ssh/id_dsa &> /dev/null
+  [ -f ~/.ssh/id_rsa ] && /usr/bin/keychain --noask ~/.ssh/id_rsa &> /dev/null
     fi
     [ -f ~/.keychain/$HOSTNAME-sh ] && source ~/.keychain/$HOSTNAME-sh > /dev/null &> /dev/null
 fi

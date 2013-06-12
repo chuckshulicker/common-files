@@ -26,35 +26,37 @@
 ;;
 (setq auto-mode-alist (append '(
         ("\\.ss$" . scheme-mode)
-				("\\.t$" . text-mode)
-				("\\.doc$" . text-mode)
-				("\\.tex$" . latex-mode)
-				("\\.C$" . c++-mode)
-				("\\.h$" . c++-mode)
-				("\\.hh$" . c++-mode)
-				("\\.cc$" . c++-mode)
-				("\\.cpp$" . c++-mode)
-				("\\.src$" . c++-mode)
-				("\\.java$" . java-mode)
-				("\\.html$" . html-mode)
-				("\\.php$" . php-mode)
-				("\\.js$" . js-mode)
-				("\\.js.erb$" . js-mode)
-				("\\.cl$" . lisp-mode)
-				("\\.tpl$" . html-mode)
-				("\\.rb$" . ruby-mode)
+        ("\\.t$" . text-mode)
+        ("\\.doc$" . text-mode)
+        ("\\.tex$" . latex-mode)
+        ("\\.C$" . c++-mode)
+        ("\\.h$" . c++-mode)
+        ("\\.hh$" . c++-mode)
+        ("\\.cc$" . c++-mode)
+        ("\\.cpp$" . c++-mode)
+        ("\\.src$" . c++-mode)
+        ("\\.java$" . java-mode)
+        ("\\.html$" . html-mode)
+        ("\\.php$" . php-mode)
+        ("\\.js$" . js-mode)
+        ("\\.js.erb$" . js-mode)
+        ("\\.cl$" . lisp-mode)
+        ("\\.tpl$" . html-mode)
+        ("\\.rb$" . ruby-mode)
         ("\\.prawn" . ruby-mode)
-				("\\.Gemfile$" . ruby-mode)
-				("\\.Capfile$" . ruby-mode)
-				("\\.gemspec$" . ruby-mode)
+        ("\\.Gemfile$" . ruby-mode)
+        ("\\.Capfile$" . ruby-mode)
+        ("\\.Rakefile$" . ruby-mode)
+        ("\\.gemspec$" . ruby-mode)
         ("\\Gemfile$" . ruby-mode)
         ("\\Capfile$" . ruby-mode)
+        ("\\Rakefile$" . ruby-mode)
         ("\\.rabl$" . ruby-mode)
-				("\\.sass$" . sass-mode)
-				("\\.scss$" . sass-mode)
-				("\\.haml$" . haml-mode)
-				("\\.feature$" . feature-mode)
-				("\\.org$" . org-mode)
+        ("\\.sass$" . sass-mode)
+        ("\\.scss$" . sass-mode)
+        ("\\.haml$" . haml-mode)
+        ("\\.feature$" . feature-mode)
+        ("\\.org$" . org-mode)
         ("\\.cnf$" . conf-mode)
           ) auto-mode-alist))
 
@@ -84,7 +86,7 @@
   (interactive)
   (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
                                            nil
-                                           'fullboth))) 
+                                           'fullboth)))
 
 (defun arrange-frame (w h &optional nosplit)
   "Rearrange the current frame to a custom width and height and split unless prefix."
@@ -141,12 +143,12 @@
   (arrange-frame 85 26 t)
   (my-set-mac-font "PragmataPro" 26))
 
- 
+
 (defun load-directory (dir)
   (mapcar '(lambda (x)
              (load-file x))
           (directory-files dir t "\\.el$")))
- 
+
 
 
 
@@ -179,11 +181,11 @@
 ;;   (make-local-variable 'linum-mode)
 ;;   (setq linum-mode nil)
 ;;   )
- 
+
 ;; (add-hook 'term-mode-hook 'local-linum-mode-off)
 
 ;; make so you can do C-x k instead of C-x # when done editing with emacsclient
-(add-hook 'server-switch-hook 
+(add-hook 'server-switch-hook
           (lambda ()
             (when (current-local-map)
               (use-local-map (copy-keymap (current-local-map))))
@@ -191,7 +193,7 @@
 
 
 ;; turn line numbers on in all modes except term-mode
-(add-hook 'after-change-major-mode-hook 
+(add-hook 'after-change-major-mode-hook
           '(lambda ()
              (if (not (equal major-mode 'term-mode))
                  (linum-mode 1))))
@@ -214,11 +216,11 @@
   (interactive)
   (make-local-variable 'global-hl-line-mode)
   (setq global-hl-line-mode nil))
- 
+
 
 ;; don't highlight the current line in eterm
 (add-hook 'term-mode-hook 'local-hl-line-mode-off)
-  
+
 
 ;; change term-mode prefix key from C-c to C-x
 ;; also unmap M-x from going right to the shell so it behaves like emacs
@@ -284,10 +286,10 @@
 (require 'rails)
 
 
-(add-hook 'ruby-mode-hook 
-	  (function (lambda ()
-		      (local-set-key (kbd "<tab>") 'indent-according-to-mode)
-		      )))
+(add-hook 'ruby-mode-hook
+    (function (lambda ()
+          (local-set-key (kbd "<tab>") 'indent-according-to-mode)
+          )))
 
 
 (load-file "~/.emacs.d/lisp/php-mode.el")
@@ -310,7 +312,7 @@
 
 (autoload 'js2-mode "js2-20080616a" nil t)
 ;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
- 
+
 (setq js2-basic-offset 2)
 (setq js2-cleanup-whitespace nil)
 
@@ -440,7 +442,7 @@
 
 ;;;;; M-g does goto-line ;;;;
 
-(global-set-key [f2] 'eval-buffer)	; F2
+(global-set-key [f2] 'eval-buffer)  ; F2
 (global-set-key [f4] 'revert-buffer)    ; F4
 
 ;;;;;; quick move cursor to top or bottom of screen ;;;;;
@@ -490,7 +492,7 @@
 
 ;; indent-or-complete seems to do the job well enough,
 ;; but a simple global binding to tab is not what we want
-;; (if I remember correctly, it messes up the mini-buffer 
+;; (if I remember correctly, it messes up the mini-buffer
 ;;  where tab is generally bound to minibuffer-complete)
 ;;(global-set-key [tab] 'indent-or-complete)
 
@@ -501,54 +503,54 @@
 (define-key text-mode-map [tab] 'indent-or-complete)
 ;;(define-key verilog-mode-map [tab] 'indent-or-complete)
 (add-hook 'verilog-mode-hook
-	  (function (lambda ()
-		      (local-set-key (kbd "") 'indent-or-complete)
-		      )))
-			     
-(add-hook 'java-mode-hook 
-	  (function (lambda ()
-		      (local-set-key (kbd "") 'indent-or-complete)
-		      )))
+    (function (lambda ()
+          (local-set-key (kbd "") 'indent-or-complete)
+          )))
 
-(add-hook 'c-mode-common-hook 
-	  (function (lambda ()
-		      (setq c-basic-offset 4)
-		      (local-set-key (kbd "") 'indent-or-complete)
-		      ;;With tab doing completion, M-tab is free for indent-region
-		      (local-set-key [?\C-c tab] 'indent-region)
-		      )))
+(add-hook 'java-mode-hook
+    (function (lambda ()
+          (local-set-key (kbd "") 'indent-or-complete)
+          )))
 
-;;;;;;;;;;;;;;; color settings ;;;;;;;;;;;;;;;;;;;;;;
-(set-foreground-color "grey100" )
-;;(set-background-color "#000044" )
-(set-background-color "black")
+(add-hook 'c-mode-common-hook
+    (function (lambda ()
+          (setq c-basic-offset 4)
+          (local-set-key (kbd "") 'indent-or-complete)
+          ;;With tab doing completion, M-tab is free for indent-region
+          (local-set-key [?\C-c tab] 'indent-region)
+          )))
 
-(set-cursor-color "yellow")
-(set-border-color "DarkSlateGray" )
+;; ;;;;;;;;;;;;;;; color settings ;;;;;;;;;;;;;;;;;;;;;;
+;; (set-foreground-color "grey100" )
+;; ;;(set-background-color "#000044" )
+;; (set-background-color "black")
 
-(setq default-frame-alist
-      (append default-frame-alist
-	      '((foreground-color . "grey100")
-		(background-color . "black")
-		(cursor-color . "yellow")
-	        ;(mouse-color . "DarkSlateGray")
-		)))
-(set-face-foreground 'font-lock-comment-face       "gray")
-(set-face-foreground 'font-lock-string-face        "OrangeRed")
-;(set-face-foreground 'font-lock-doc-string-face    "gray")
-(set-face-foreground 'font-lock-function-name-face "green")
-(set-face-foreground 'font-lock-variable-name-face "cyan")
-(set-face-foreground 'font-lock-type-face          "SandyBrown")
-(set-face-foreground 'font-lock-keyword-face       "Magenta")
-(set-face-foreground 'font-lock-builtin-face       "Wheat")
-(set-face-foreground 'font-lock-constant-face      "yellow") ; "Wheat")
+;; (set-cursor-color "yellow")
+;; (set-border-color "DarkSlateGray" )
 
-(set-face-foreground 'modeline "black")
-(set-face-background 'modeline "grey100")
-(set-face-background 'region "blue")
-(set-face-foreground 'bold "red")
-(set-face-foreground 'italic "yellow")
-(set-face-background 'highlight "blue") 
+;; (setq default-frame-alist
+;;       (append default-frame-alist
+;;         '((foreground-color . "grey100")
+;;     (background-color . "black")
+;;     (cursor-color . "yellow")
+;;           ;(mouse-color . "DarkSlateGray")
+;;     )))
+;; (set-face-foreground 'font-lock-comment-face       "gray")
+;; (set-face-foreground 'font-lock-string-face        "OrangeRed")
+;; ;(set-face-foreground 'font-lock-doc-string-face    "gray")
+;; (set-face-foreground 'font-lock-function-name-face "green")
+;; (set-face-foreground 'font-lock-variable-name-face "cyan")
+;; (set-face-foreground 'font-lock-type-face          "SandyBrown")
+;; (set-face-foreground 'font-lock-keyword-face       "Magenta")
+;; (set-face-foreground 'font-lock-builtin-face       "Wheat")
+;; (set-face-foreground 'font-lock-constant-face      "yellow") ; "Wheat")
+
+;; (set-face-foreground 'modeline "black")
+;; (set-face-background 'modeline "grey100")
+;; (set-face-background 'region "blue")
+;; (set-face-foreground 'bold "red")
+;; (set-face-foreground 'italic "yellow")
+;; (set-face-background 'highlight "blue")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;CLAUDE'S SHIT BELOW, EDIT THIS AND INTEGRATE WITH OTHER STUFF
@@ -559,13 +561,13 @@
 (global-set-key "%" 'run-scheme)
 (global-set-key "!" 'shell)
 
-(add-hook 'text-mode-hook 
+(add-hook 'text-mode-hook
   (function
    (lambda ()
      (auto-fill-mode 1)
      (local-set-key "" 'newline-and-indent))))
 
-(add-hook 'java-mode-hook 
+(add-hook 'java-mode-hook
   (function
    (lambda ()
      (auto-fill-mode 0)
@@ -591,7 +593,7 @@
    (lambda ()
      (local-set-key "p" 'comint-previous-matching-input-from-input)
      (local-set-key "n" 'comint-next-matching-input-from-input))))
-(add-hook 'scheme-mode-hook 
+(add-hook 'scheme-mode-hook
   (function
    (lambda ()
      (local-set-key "" 'newline-and-indent))))
@@ -688,7 +690,7 @@
     (find-file (buffer-name))
     (set-window-vscroll nil curr-scroll)
     (message "Reloaded file")))
- 
+
 (global-set-key "\C-x\C-v" 'reload-file)
 
 (require 'recentf)
@@ -698,4 +700,3 @@
 
 (defun word-count nil "Count words in buffer" (interactive)
 (shell-command-on-region (point-min) (point-max) "wc -w"))
-
