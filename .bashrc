@@ -14,6 +14,7 @@ export LC_COLLATE="POSIX"
 export ACKRC="$HOME/.ackrc"
 export ARCHFLAGS="-arch x86_64"
 export NODE_PATH=/usr/local/lib/node_modules
+export SSL_CERT_FILE=/usr/local/opt/curl-ca-bundle/share/ca-bundle.crt
 
 # remove the ':' from wordbreaks so we don't have to escape it on teh command line
 COMP_WORDBREAKS=${COMP_WORDBREAKS//:}

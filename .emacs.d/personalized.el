@@ -57,6 +57,27 @@ point reaches the beginning or end of the buffer, stop there."
    (arrange-frame 170 45 nosplit))
 
 
+(defun smart-open-line-above ()
+  "Insert an empty line above the current line.
+Position the cursor at it's beginning, according to the current mode."
+  (interactive)
+  (move-beginning-of-line nil)
+  (newline-and-indent)
+  (forward-line -1)
+  (indent-according-to-mode))
+
+(global-set-key [(shift return)] 'smart-open-line-above)
+
+
+(defun font-lock-comment-annotations ()
+  "Highlight a bunch of well known comment annotations.
+
+This functions should be added to the hooks of major modes for programming."
+  (font-lock-add-keywords
+   nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):"
+          1 font-lock-warning-face t))))
+(add-hook 'prog-mode-hook 'font-lock-comment-annotations)
+
 ;; set an overly big column width
 (require 'whitespace) (setq whitespace-line-column 100)
 ;; highlight the extra part of a line beyond the line length limit
